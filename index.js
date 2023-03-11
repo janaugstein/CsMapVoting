@@ -23,9 +23,13 @@ mongoose.connect(connectionString).then(() => {
     res.send("<p>Hello World</p>");
   });
   //when joining a session: check req.sessionID and send back the maps
-  app.post("/joinSession", (req, res) => {
+  app.post("/joinSession", async (req, res) => {
     console.log(req.body);
-    res.send("You joined Session XY");
+    var searchedSession = await sessionModel.find({
+      sessionID: req.body.sessionID,
+    });
+    console.log(searchedSession);
+    res.send({ message: "You joined Session XY", data: searchedSession });
   });
 
   app.listen(port, () => [
