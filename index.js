@@ -2,10 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const sessionModel = require("./models/sessionModel");
 const app = express();
+
+require("dotenv").config({ path: "./config.env" });
 const port = 8001;
 
-const connectionString =
-  "mongodb+srv://janA:jan97315@cluster0.bm2xy.mongodb.net/csmapvoting?retryWrites=true&w=majority";
+const connectionString = process.env.DBCONNECTION;
 
 mongoose.connect(connectionString).then(() => {
   app.get("/", (req, res) => [res.send("<p>Hello World</p>")]);
