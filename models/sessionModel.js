@@ -12,7 +12,8 @@ const sessionSchema = new Schema({
   votesMap1: Number,
   votesMap2: Number,
   votesMap3: Number,
-  whoVoted: [Number],
+  whoVoted: [String],
+  participants: [String],
 });
 
 // Compile model from schema
