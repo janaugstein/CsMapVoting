@@ -1,0 +1,22 @@
+{
+  "name": "csmapvoting",
+  "version": "1.0.0",
+  "description": "Hallo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janaugstein/CsMapVoting.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janaugstein/CsMapVoting/issues"
+  },
+  "homepage": "https://github.com/janaugstein/CsMapVoting#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
