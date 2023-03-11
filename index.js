@@ -16,6 +16,7 @@ app.use(
     //credentials: true
   })
 );
+app.use(express.json());
 
 mongoose.connect(connectionString).then(() => {
   app.get("/", (req, res) => {
@@ -23,7 +24,7 @@ mongoose.connect(connectionString).then(() => {
   });
   //when joining a session: check req.sessionID and send back the maps
   app.post("/joinSession", (req, res) => {
-    console.log(req);
+    console.log(req.body);
     res.send("You joined Session XY");
   });
 
