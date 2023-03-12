@@ -29,6 +29,7 @@ mongoose.connect(connectionString).then(() => {
       sessionID: req.body.sessionID,
     });
     console.log(searchedSession);
+
     /**
      * TODO
      * add the name to the participants
@@ -36,9 +37,16 @@ mongoose.connect(connectionString).then(() => {
     res.send({ message: "You joined Session XY", data: searchedSession });
   });
 
-  app.post("/vote", (req, res) => {
+  app.post("/vote", async (req, res) => {
     console.log(req.body);
-    res.send({ message: "You just voted" });
+    //res.send({ message: "You just voted" });
+    var session = await sessionModel.find({ sessionID: req.body.sessionID });
+    console.log(session);
+    if (session[0].whoVoted.includes(req.body.name)) {
+      res.send({ message: "You already voted" });
+    } else {
+      res.send({ message: "You just voted" });
+    }
     /**
      * TODO
      * increase the counter of the vouted map, add the name to the voted, check if he already voted before
