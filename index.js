@@ -29,23 +29,33 @@ mongoose.connect(connectionString).then(() => {
     var searchedSession = await sessionModel.find({
       sessionID: req.body.sessionID,
     });
-    console.log(searchedSession);
+    console.log(searchedSession[0].maps[0]);
+    var maps = [];
+    for (var i = 0; i < searchedSession[0].maps.length; i++) {
+      var map = await MapModel.findById(searchedSession[0].maps[i]);
+      console.log(map);
+      maps.push(map.name);
+      console.log(map.name);
+    }
 
     /**
      * TODO
      * add the name to the participants
      */
-    res.send({ message: "You joined Session XY", data: searchedSession });
+    res.send({ message: "You joined Session XY", data: maps });
   });
 
   app.post("/vote", async (req, res) => {
     console.log(req.body);
     //res.send({ message: "You just voted" });
     var session = await sessionModel.find({ sessionID: req.body.sessionID });
-    console.log(session);
+    console.log(session[0]);
     if (session[0].whoVoted.includes(req.body.name)) {
       res.send({ message: "You already voted" });
     } else {
+      var mapsInSession = session[0].maps;
+      console.log(session[0].maps);
+      console.log(session[0].whoVoted);
       res.send({ message: "You just voted" });
     }
     /**
