@@ -47,20 +47,37 @@ mongoose.connect(connectionString).then(() => {
 
   app.post("/vote", async (req, res) => {
     console.log(req.body);
-    //res.send({ message: "You just voted" });
-    var session = await sessionModel.find({ sessionID: req.body.sessionID });
-    console.log(session[0]);
+    var sessionID = req.body.sessionID;
+    var votedFor = req.body.voted;
+    var user = req.body.name;
+
+    var session = await sessionModel.find({ sessionID: sessionID });
+
     if (session[0].whoVoted.includes(req.body.name)) {
-      res.send({ message: "You already voted" });
+      res.send({ message: "You already voted", voted: true });
     } else {
-      var mapsInSession = session[0].maps;
-      console.log(session[0].maps);
-      console.log(session[0].whoVoted);
-      res.send({ message: "You just voted" });
+      var mapIDsInSession = session[0].maps;
+      for (var j = 0; j < mapIDsInSession.length; j++) {
+        var map = await MapModel.findById(mapIDsInSession[j]);
+        if (map.name === votedFor) {
+          var newvotes = map.votes + 1;
+          await MapModel.findByIdAndUpdate(mapIDsInSession[j], {
+            votes: newvotes,
+          });
+          var participants = session[0].whoVoted;
+          participants.push(user);
+          console.log(participants);
+          await sessionModel.findOneAndUpdate(
+            { sessionID: sessionID },
+            { whoVoted: participants }
+          );
+          res.send({ message: `You just voted for ${map.name}`, voted: true });
+        }
+      }
     }
     /**
      * TODO
-     * increase the counter of the vouted map, add the name to the voted, check if he already voted before
+     *  add the name to the voted
      */
   });
 
