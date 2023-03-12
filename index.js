@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const sessionModel = require("./models/sessionModel");
+const MapModel = require("./models/mapModel");
 const app = express();
 const cors = require("cors");
 
@@ -57,16 +58,31 @@ mongoose.connect(connectionString).then(() => {
     console.log(`Example app listening on port ${port}`),
   ]);
 
-  const newSession = new sessionModel({
-    sessionID: 1,
-    map1: "cache",
-    map2: "inferno",
-    map3: "anubis",
-    votesMap1: 2,
-    votesMap2: 1,
-    votesMap3: 0,
-    whoVoted: ["Kurice", "Impulze"],
-    participants: ["Nesing", "Kurice"],
-  });
-  //newSession.save();
+  async function seeding() {
+    const cache = new MapModel({ name: "cache", votes: 2 });
+    const inferno = new MapModel({ name: "inferno", votes: 1 });
+    const anubis = new MapModel({ name: "anubis", votes: 0 });
+
+    //cache.save();
+    //inferno.save();
+    //anubis.save();
+    var cacheObj = await MapModel.find({ name: "cache" });
+    console.log(cacheObj[0]);
+    var cacheID = cacheObj[0]._id;
+    var infernoObj = await MapModel.find({ name: "inferno" });
+    console.log(infernoObj[0]);
+    var infernoID = infernoObj[0]._id;
+    var anubisObj = await MapModel.find({ name: "anubis" });
+    console.log(anubisObj[0]);
+    var anubisID = anubisObj[0]._id;
+
+    const newSession = new sessionModel({
+      sessionID: 1,
+      maps: [cacheID, infernoID, anubisID],
+      whoVoted: ["Kurice", "Impulze"],
+      participants: ["Nesing", "Kurice"],
+    });
+    newSession.save();
+  }
+  //seeding();
 });

@@ -6,12 +6,7 @@ const Schema = mongoose.Schema;
 
 const sessionSchema = new Schema({
   sessionID: Number,
-  map1: String,
-  map2: String,
-  map3: String,
-  votesMap1: Number,
-  votesMap2: Number,
-  votesMap3: Number,
+  maps: [{ type: Schema.Types.ObjectId, ref: "Map" }],
   whoVoted: [String],
   participants: [String],
 });
