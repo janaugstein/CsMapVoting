@@ -46,17 +46,17 @@ mongoose.connect(connectionString).then(() => {
   });
 
   app.post("/vote", async (req, res) => {
-    console.log(req.body);
     var sessionID = req.body.sessionID;
     var votedFor = req.body.voted;
     var user = req.body.name;
 
     var session = await sessionModel.find({ sessionID: sessionID });
-
+    //check if user already voted
     if (session[0].whoVoted.includes(req.body.name)) {
       res.send({ message: "You already voted", voted: true });
     } else {
       var mapIDsInSession = session[0].maps;
+      //search for voted Map and increased the counter for votes
       for (var j = 0; j < mapIDsInSession.length; j++) {
         var map = await MapModel.findById(mapIDsInSession[j]);
         if (map.name === votedFor) {
@@ -64,6 +64,7 @@ mongoose.connect(connectionString).then(() => {
           await MapModel.findByIdAndUpdate(mapIDsInSession[j], {
             votes: newvotes,
           });
+          //add user to the list of whoVoted
           var participants = session[0].whoVoted;
           participants.push(user);
           console.log(participants);
@@ -75,10 +76,6 @@ mongoose.connect(connectionString).then(() => {
         }
       }
     }
-    /**
-     * TODO
-     *  add the name to the voted
-     */
   });
 
   app.listen(port, () => [
