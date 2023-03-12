@@ -29,7 +29,20 @@ mongoose.connect(connectionString).then(() => {
       sessionID: req.body.sessionID,
     });
     console.log(searchedSession);
+    /**
+     * TODO
+     * add the name to the participants
+     */
     res.send({ message: "You joined Session XY", data: searchedSession });
+  });
+
+  app.post("/vote", (req, res) => {
+    console.log(req.body);
+    res.send({ message: "You just voted" });
+    /**
+     * TODO
+     * increase the counter of the vouted map, add the name to the voted, check if he already voted before
+     */
   });
 
   app.listen(port, () => [
