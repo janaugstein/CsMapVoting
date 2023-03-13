@@ -72,10 +72,26 @@ mongoose.connect(connectionString).then(() => {
             { sessionID: sessionID },
             { whoVoted: participants }
           );
-          res.send({ message: `You just voted for ${map.name}`, voted: true });
+          //res.send({ message: `You just voted for ${map.name}`, voted: true });
         }
       }
     }
+  });
+
+  app.post("/getVotesFromSession", async (req, res) => {
+    var sessionID = req.body.sessionID;
+
+    var session = await sessionModel.find({ sessionID: sessionID });
+    var mapIds = session[0].maps;
+    var maps = [];
+    console.log(mapIds);
+    for (var k = 0; k < mapIds.length; k++) {
+      console.log(mapIds[k]);
+      var map = await MapModel.findById(mapIds[k]);
+      maps.push(map);
+    }
+    console.log(maps);
+    res.send(maps);
   });
 
   app.listen(port, () => [
