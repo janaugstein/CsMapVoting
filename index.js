@@ -94,8 +94,11 @@ mongoose.connect(connectionString).then(() => {
   app.post("/getVotesFromSession", async (req, res) => {
     try {
       var sessionID = req.body.sessionID;
-
       var session = await sessionModel.find({ sessionID: sessionID });
+      if (session.length === 0) {
+        res.send({ message: "Session doesnt exist" });
+        return;
+      }
       var mapIds = session[0].maps;
       var maps = [];
       console.log(mapIds);
