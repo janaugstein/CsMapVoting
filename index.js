@@ -46,6 +46,7 @@ mongoose.connect(connectionString).then(() => {
       res.send({ message: "You joined Session XY", data: maps });
     } catch (err) {
       console.log(err);
+      res.send({ error: err });
     }
   });
 
@@ -86,6 +87,7 @@ mongoose.connect(connectionString).then(() => {
       }
     } catch (err) {
       console.log(err);
+      res.send({ error: err });
     }
   });
 
@@ -106,6 +108,7 @@ mongoose.connect(connectionString).then(() => {
       res.send(maps);
     } catch (err) {
       console.log(err);
+      res.send({ error: err });
     }
   });
   /**
@@ -135,6 +138,7 @@ mongoose.connect(connectionString).then(() => {
       await newSession.save();
     } catch (err) {
       console.log(err);
+      res.send({ error: err });
     }
     res.send({ sessionID: sessionID });
   });
