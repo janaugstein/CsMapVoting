@@ -93,6 +93,18 @@ mongoose.connect(connectionString).then(() => {
     console.log(maps);
     res.send(maps);
   });
+  /**
+   * TODO
+   * req contains the nam of the maps, generate sessionID, save session and maps,
+   * res must contain the sessionID
+   */
+  app.post("/createSession", async (req, res) => {
+    var maps = req.body.maps;
+    var sessionID = Math.floor(1000 + Math.random() * 9000);
+    console.log(maps);
+    console.log(sessionID);
+    res.send({ sessionID: sessionID });
+  });
 
   app.listen(port, () => [
     console.log(`Example app listening on port ${port}`),
