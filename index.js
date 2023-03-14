@@ -72,7 +72,7 @@ mongoose.connect(connectionString).then(() => {
             { sessionID: sessionID },
             { whoVoted: participants }
           );
-          //res.send({ message: `You just voted for ${map.name}`, voted: true });
+          res.send({ message: `You just voted for ${map.name}`, voted: true });
         }
       }
     }
@@ -99,10 +99,28 @@ mongoose.connect(connectionString).then(() => {
    * res must contain the sessionID
    */
   app.post("/createSession", async (req, res) => {
-    var maps = req.body.maps;
-    var sessionID = Math.floor(1000 + Math.random() * 9000);
-    console.log(maps);
-    console.log(sessionID);
+    try {
+      var maps = req.body.maps;
+      var sessionID = Math.floor(1000 + Math.random() * 9000);
+      console.log(maps);
+      console.log(sessionID);
+      var mapObjIDs = [];
+      for (var i = 0; i < maps.length; i++) {
+        var map = new MapModel({ name: maps[i], votes: 0 });
+        console.log(map);
+        mapObjIDs.push(map._id);
+        await map.save();
+      }
+      var newSession = new sessionModel({
+        sessionID: sessionID,
+        maps: mapObjIDs,
+        whoVotes: [],
+        participants: [],
+      });
+      await newSession.save();
+    } catch (err) {
+      console.log(err);
+    }
     res.send({ sessionID: sessionID });
   });
 

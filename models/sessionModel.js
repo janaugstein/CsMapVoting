@@ -9,6 +9,11 @@ const sessionSchema = new Schema({
   maps: [{ type: Schema.Types.ObjectId, ref: "Map" }],
   whoVoted: [String],
   participants: [String],
+  expireAt: {
+    type: Date,
+    expires: 1800,
+    default: Date.now,
+  },
 });
 
 // Compile model from schema
