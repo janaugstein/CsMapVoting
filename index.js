@@ -23,7 +23,11 @@ mongoose.connect(connectionString).then(() => {
   app.get("/", (req, res) => {
     res.send("<p>Hello World</p>");
   });
-  //when joining a session: check req.sessionID and send back the maps
+  /**
+   * Route to join a session. The required Session will be loaded and the maps that are in the sesion are loaded and send back to the Frontend
+   * req: contains the sessionID and the name of the user
+   * res: used to send back the maps
+   */
   app.post("/joinSession", async (req, res) => {
     try {
       console.log(req.body);
@@ -49,7 +53,11 @@ mongoose.connect(connectionString).then(() => {
       res.send({ error: err });
     }
   });
-
+  /**
+   * Route that is used to vote for a map. Search the required session, check if user already voted. If not then increase the vote for the voted map
+   * req: contains sessionID, the name of the user and the map that has been voted
+   * res: is used to send back a message if u have already voted and therefor are not allowed or that u just voted for a map
+   */
   app.post("/vote", async (req, res) => {
     try {
       var sessionID = req.body.sessionID;
@@ -90,7 +98,11 @@ mongoose.connect(connectionString).then(() => {
       res.send({ error: err });
     }
   });
-
+  /**
+   * Route used to get the maps and corresponding votes of a session.
+   * req: contains the sessionID
+   * res: is used to send back a list of maps and their votes
+   */
   app.post("/getVotesFromSession", async (req, res) => {
     try {
       var sessionID = req.body.sessionID;
@@ -115,9 +127,9 @@ mongoose.connect(connectionString).then(() => {
     }
   });
   /**
-   * TODO
-   * req contains the nam of the maps, generate sessionID, save session and maps,
-   * res must contain the sessionID
+   * Route to create a Session by generating a random 4 digit number, saving the maps that are send from the frontend and then saving the session with the corresponding maps
+   * req: contains a list of the maps
+   * res: is used to send back the sessionID for the frontend
    */
   app.post("/createSession", async (req, res) => {
     try {
