@@ -30,23 +30,26 @@ mongoose.connect(connectionString).then(() => {
    */
   app.post("/joinSession", async (req, res) => {
     try {
-      console.log(req.body);
+      //console.log(req.body);
       var searchedSession = await sessionModel.find({
         sessionID: req.body.sessionID,
       });
-      console.log(searchedSession[0].maps[0]);
+      //console.log(searchedSession[0].maps[0]);
       var maps = [];
       for (var i = 0; i < searchedSession[0].maps.length; i++) {
         var map = await MapModel.findById(searchedSession[0].maps[i]);
-        console.log(map);
+        //console.log(map);
         maps.push(map.name);
-        console.log(map.name);
+        //console.log(map.name);
       }
-
-      /**
-       * TODO
-       * add the name to the participants
-       */
+      //add user to the list of participants
+      var user = req.body.name;
+      var participants = searchedSession[0].participants;
+      participants.push(user);
+      let check = await sessionModel.findOneAndUpdate(
+        { sessionID: req.body.sessionID },
+        { participants: participants }
+      );
       res.send({ message: "You joined Session XY", data: maps });
     } catch (err) {
       console.log(err);
@@ -81,7 +84,7 @@ mongoose.connect(connectionString).then(() => {
             //add user to the list of whoVoted
             var participants = session[0].whoVoted;
             participants.push(user);
-            console.log(participants);
+            //console.log(participants);
             await sessionModel.findOneAndUpdate(
               { sessionID: sessionID },
               { whoVoted: participants }
@@ -113,13 +116,13 @@ mongoose.connect(connectionString).then(() => {
       }
       var mapIds = session[0].maps;
       var maps = [];
-      console.log(mapIds);
+      //console.log(mapIds);
       for (var k = 0; k < mapIds.length; k++) {
-        console.log(mapIds[k]);
+        //console.log(mapIds[k]);
         var map = await MapModel.findById(mapIds[k]);
         maps.push(map);
       }
-      console.log(maps);
+      //console.log(maps);
       res.send(maps);
     } catch (err) {
       console.log(err);
@@ -135,12 +138,12 @@ mongoose.connect(connectionString).then(() => {
     try {
       var maps = req.body.maps;
       var sessionID = Math.floor(1000 + Math.random() * 9000);
-      console.log(maps);
-      console.log(sessionID);
+      //console.log(maps);
+      //console.log(sessionID);
       var mapObjIDs = [];
       for (var i = 0; i < maps.length; i++) {
         var map = new MapModel({ name: maps[i], votes: 0 });
-        console.log(map);
+        //console.log(map);
         mapObjIDs.push(map._id);
         await map.save();
       }

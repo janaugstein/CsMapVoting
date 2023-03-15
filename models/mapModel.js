@@ -7,9 +7,9 @@ const Schema = mongoose.Schema;
 const mapSchema = new Schema({
   name: String,
   votes: Number,
-  expireAt: {
+  createdAt: {
     type: Date,
-    expires: 1800,
+    expires: 60 * 30,
     default: Date.now,
   },
 });
