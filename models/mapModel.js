@@ -9,7 +9,7 @@ const mapSchema = new Schema({
   votes: Number,
   createdAt: {
     type: Date,
-    expires: 60 * 30,
+    expires: 180000,
     default: Date.now,
   },
 });

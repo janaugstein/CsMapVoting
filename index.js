@@ -123,7 +123,12 @@ mongoose.connect(connectionString).then(() => {
         maps.push(map);
       }
       //console.log(maps);
-      res.send(maps);
+      res.send({
+        maps: maps,
+        participants: session[0].participants,
+        whoVoted: session[0].whoVoted,
+        sessionOwner: session[0].sessionOwner,
+      });
     } catch (err) {
       console.log(err);
       res.send({ error: err });
@@ -152,6 +157,7 @@ mongoose.connect(connectionString).then(() => {
         maps: mapObjIDs,
         whoVotes: [],
         participants: [],
+        sessionOwner: req.body.name,
       });
       await newSession.save();
     } catch (err) {

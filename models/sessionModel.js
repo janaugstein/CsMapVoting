@@ -9,9 +9,10 @@ const sessionSchema = new Schema({
   maps: [{ type: Schema.Types.ObjectId, ref: "Map" }],
   whoVoted: [String],
   participants: [String],
+  sessionOwner: String,
   createdAt: {
     type: Date,
-    expires: 60 * 30,
+    expires: 180000,
     default: Date.now,
   },
 });
