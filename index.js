@@ -9,10 +9,11 @@ require("dotenv").config({ path: "./config.env" });
 const port = 8001;
 
 const connectionString = process.env.DBCONNECTION;
+const corsOrigin = process.env.CORSORIGINURL;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: corsOrigin,
     methods: ["GET", "POST"],
     //credentials: true
   })
