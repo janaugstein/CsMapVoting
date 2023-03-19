@@ -34,6 +34,13 @@ mongoose.connect(connectionString).then(() => {
       var searchedSession = await sessionModel.find({
         sessionID: req.body.sessionID,
       });
+      console.log(searchedSession);
+      //check if searchedSession is empty
+      if (searchedSession.length === 0) {
+        //console.log("Session not exist");
+        res.send({ message: "The sessionID does not exist" });
+        return;
+      }
       //console.log(searchedSession[0].maps[0]);
       var maps = [];
       for (var i = 0; i < searchedSession[0].maps.length; i++) {
