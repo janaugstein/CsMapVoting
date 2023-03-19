@@ -174,6 +174,25 @@ mongoose.connect(connectionString).then(() => {
     res.send({ sessionID: sessionID });
   });
 
+  app.post("/getParticipants", async (req, res) => {
+    try {
+      var sessionID = req.body.sessionID;
+      console.log(sessionID);
+      var session = await sessionModel.find({ sessionID: sessionID });
+      if (session.length === 0) {
+        res.status(404).send({ message: "Session doesnt exist" });
+        return;
+      }
+      console.log(session);
+      var participants = session[0].participants;
+      console.log(participants);
+      res.send({ participants: participants });
+    } catch (err) {
+      console.log(err);
+      res.send({ error: err });
+    }
+  });
+
   app.listen(port, () => [
     console.log(`Example app listening on port ${port}`),
   ]);
