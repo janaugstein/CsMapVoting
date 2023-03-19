@@ -38,7 +38,7 @@ mongoose.connect(connectionString).then(() => {
       //check if searchedSession is empty
       if (searchedSession.length === 0) {
         //console.log("Session not exist");
-        res.send({ message: "The sessionID does not exist" });
+        res.status(404).send({ message: "The sessionID does not exist" });
         return;
       }
       //console.log(searchedSession[0].maps[0]);
